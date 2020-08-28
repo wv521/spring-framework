@@ -553,8 +553,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Invoke factory processors registered as beans in the context.
 
-				// 调用后处理器（主要是对注入的bean的配置数据进行变更）
-				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// bean先实例化再初始化
 				// BeanFactoryPostProcessor接口与BeanPostProcessor相似，
@@ -562,6 +560,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// 也就是说，Spring IoC容器允许BeanFactoryPostProcessor读取配置元数据，
 				// 并能在容器 实例化任何Bean之前更改 这些元数据。换句话说 ：
 				// 就是可以让我们随心所欲地修改BeanFactory内所有BeanDefinition定义数据。
+
+
+				// 调用后处理器（主要是对注入的bean的配置数据进行变更）
+				invokeBeanFactoryPostProcessors(beanFactory);
+
 
 				// Register bean processors that intercept bean creation.
 				// 注册bean的后处理器（BeanPostProcessors）
