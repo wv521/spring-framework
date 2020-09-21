@@ -103,12 +103,12 @@ class BeanDefinitionValueResolver {
 	public Object resolveValueIfNecessary(Object argName, Object value) {
 		// We must check each value to see whether it requires a runtime reference
 		// to another bean to be resolved.
-		if (value instanceof RuntimeBeanReference) {
+		if (value instanceof RuntimeBeanReference) { // 如果是bean的引用
 			RuntimeBeanReference ref = (RuntimeBeanReference) value;
 			// 创建所依赖的bean
 			return resolveReference(argName, ref);
 		}
-		else if (value instanceof RuntimeBeanNameReference) {
+		else if (value instanceof RuntimeBeanNameReference) { // bean name名称的引用
 			String refName = ((RuntimeBeanNameReference) value).getBeanName();
 			refName = String.valueOf(doEvaluate(refName));
 			if (!this.beanFactory.containsBean(refName)) {
@@ -117,19 +117,19 @@ class BeanDefinitionValueResolver {
 			}
 			return refName;
 		}
-		else if (value instanceof BeanDefinitionHolder) {
+		else if (value instanceof BeanDefinitionHolder) { // 解析beanDefinitionHolder引用
 			// Resolve BeanDefinitionHolder: contains BeanDefinition with name and aliases.
 			BeanDefinitionHolder bdHolder = (BeanDefinitionHolder) value;
 			return resolveInnerBean(argName, bdHolder.getBeanName(), bdHolder.getBeanDefinition());
 		}
-		else if (value instanceof BeanDefinition) {
+		else if (value instanceof BeanDefinition) { // 解析beanDefinition原始bean
 			// Resolve plain BeanDefinition, without contained name: use dummy name.
 			BeanDefinition bd = (BeanDefinition) value;
 			String innerBeanName = "(inner bean)" + BeanFactoryUtils.GENERATED_BEAN_NAME_SEPARATOR +
 					ObjectUtils.getIdentityHexString(bd);
 			return resolveInnerBean(argName, innerBeanName, bd);
 		}
-		else if (value instanceof ManagedArray) {
+		else if (value instanceof ManagedArray) { // 解析数组
 			// May need to resolve contained runtime references.
 			ManagedArray array = (ManagedArray) value;
 			Class<?> elementType = array.resolvedElementType;
@@ -153,19 +153,19 @@ class BeanDefinitionValueResolver {
 			}
 			return resolveManagedArray(argName, (List<?>) value, elementType);
 		}
-		else if (value instanceof ManagedList) {
+		else if (value instanceof ManagedList) { // 解析list集合
 			// May need to resolve contained runtime references.
 			return resolveManagedList(argName, (List<?>) value);
 		}
-		else if (value instanceof ManagedSet) {
+		else if (value instanceof ManagedSet) { // 解析set集合
 			// May need to resolve contained runtime references.
 			return resolveManagedSet(argName, (Set<?>) value);
 		}
-		else if (value instanceof ManagedMap) {
+		else if (value instanceof ManagedMap) { // 解析map集合
 			// May need to resolve contained runtime references.
 			return resolveManagedMap(argName, (Map<?, ?>) value);
 		}
-		else if (value instanceof ManagedProperties) {
+		else if (value instanceof ManagedProperties) { // 解析properties
 			Properties original = (Properties) value;
 			Properties copy = new Properties();
 			for (Map.Entry<Object, Object> propEntry : original.entrySet()) {
@@ -181,7 +181,7 @@ class BeanDefinitionValueResolver {
 			}
 			return copy;
 		}
-		else if (value instanceof TypedStringValue) {
+		else if (value instanceof TypedStringValue) { // 解析带有目标值的字符串
 			// Convert value to target type here.
 			TypedStringValue typedStringValue = (TypedStringValue) value;
 			Object valueObject = evaluate(typedStringValue);
